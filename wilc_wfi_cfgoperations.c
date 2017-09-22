@@ -462,7 +462,14 @@ static void CfgScanResult(enum tenuScanEvent enuScanEvent,
 			down(&(priv->hSemScanReq));
 
 			if (NULL != priv->pstrScanReq) {
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
+				struct cfg80211_scan_info info = {
+					.aborted = false,
+				};
+				cfg80211_scan_done(priv->pstrScanReq, &info);
+#else
 				cfg80211_scan_done(priv->pstrScanReq, false);
+#endif          
 				priv->u32RcvdChCount = 0;
 				priv->bCfgScanning = false;
 				priv->pstrScanReq = NULL;
@@ -478,7 +485,14 @@ static void CfgScanResult(enum tenuScanEvent enuScanEvent,
 				update_scan_time(priv);
 				refresh_scan(priv, 1, false);
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
+				struct cfg80211_scan_info info = {
+					.aborted = true,
+				};
+				cfg80211_scan_done(priv->pstrScanReq, &info);
+#else
 				cfg80211_scan_done(priv->pstrScanReq, true);
+#endif
 				priv->bCfgScanning = false;
 				priv->pstrScanReq = NULL;
 			}
