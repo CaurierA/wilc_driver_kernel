@@ -32,7 +32,10 @@ static struct wilc_spi g_spi;
 
 static int spi_read(uint32_t, uint8_t *, uint32_t);
 static int spi_write(uint32_t, uint8_t *, uint32_t);
-uint8_t spi_reset(void);
+
+
+//uint8_t spi_reset(void);
+int spi_reset(void);
 
 /*
  * Crc7
