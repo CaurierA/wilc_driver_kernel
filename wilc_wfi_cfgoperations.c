@@ -362,6 +362,12 @@ void add_network_to_shadow(struct tstrNetworkInfo *pstrNetworkInfo, void *pUserV
  * information
  * void* pUserVoid: Private structure associated with the wireless interface
  */
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
+struct cfg80211_scan_info info = {
+    .aborted = true,
+};
+#endif
+
 static void CfgScanResult(enum tenuScanEvent enuScanEvent,
 			  struct tstrNetworkInfo *pstrNetworkInfo,
 			  void *pUserVoid,
@@ -463,9 +469,7 @@ static void CfgScanResult(enum tenuScanEvent enuScanEvent,
 
 			if (NULL != priv->pstrScanReq) {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
-				struct cfg80211_scan_info info = {
-					.aborted = false,
-				};
+				info.aborted = false;
 				cfg80211_scan_done(priv->pstrScanReq, &info);
 #else
 				cfg80211_scan_done(priv->pstrScanReq, false);
@@ -486,9 +490,7 @@ static void CfgScanResult(enum tenuScanEvent enuScanEvent,
 				refresh_scan(priv, 1, false);
 
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4,7,0)
-				struct cfg80211_scan_info info = {
-					.aborted = true,
-				};
+                info.aborted = true;
 				cfg80211_scan_done(priv->pstrScanReq, &info);
 #else
 				cfg80211_scan_done(priv->pstrScanReq, true);
