@@ -3164,7 +3164,7 @@ static int WILC_WFI_del_station(struct wiphy *wiphy, struct net_device *dev,
 #endif
 {
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 19, 0)
-	u8 *mac = params->mac;
+	const u8 *mac = params->mac;
 #endif
 	s32 s32Error = WILC_SUCCESS;
 	struct WILC_WFI_priv *priv;

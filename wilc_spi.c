@@ -1156,7 +1156,8 @@ static void spi_init_pkt_sz(uint32_t* reg)
 	}
 }
 
-uint8_t spi_reset(void)
+//uint8_t spi_reset(void)
+int spi_reset(void)
 {
 	int result = N_OK;
 	
